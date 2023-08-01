@@ -1,0 +1,30 @@
+{
+  "name": "indibusiness",
+  "version": "1.0.0",
+  "description": "",
+  "engines": {
+    "node": "18",
+    "npm": "8"
+  },
+  "scripts": {
+    "setup": "npm install --prefix ./client && npm install --prefix ./server",
+    "dev:client": "cd client && npm run dev",
+    "dev:server": "cd server && npm run dev",
+    "dev": "concurrently \"npm run dev:client\" \"npm run dev:server\"",
+    "build": "cd client && npm run build",
+    "start": "cd server && npm run start",
+    "prod": "npm run build && npm run start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Aldrex99/indibusiness.git"
+  },
+  "author": "Alexandre CASU",
+  "bugs": {
+    "url": "https://github.com/Aldrex99/indibusiness/issues"
+  },
+  "homepage": "https://github.com/Aldrex99/indibusiness#readme",
+  "devDependencies": {
+    "concurrently": "^7.6.0"
+  }
+}

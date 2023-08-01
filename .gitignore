@@ -1,0 +1,10 @@
+.idea/
+/node_modules/
+/client/node_modules
+/client/.idea/
+/server/node_modules/
+/server/.idea/
+/server/.env
+/server/build/
+/server/prisma/
+/server/src/documents/
