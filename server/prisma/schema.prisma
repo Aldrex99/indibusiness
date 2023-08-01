@@ -1,0 +1,234 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("DATABASE_URL")
+}
+
+model client {
+  user              user         @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "client_user_id")
+  id                Int          @id @default(autoincrement())
+  user_id           String       @db.VarChar(100)
+  legalForm         String?      @db.VarChar(10)
+  name              String       @db.VarChar(100)
+  address           String?      @db.VarChar(100)
+  addressComplement String?      @db.VarChar(100)
+  zipCode           String?      @db.VarChar(10)
+  city              String?      @db.VarChar(100)
+  email             String       @db.VarChar(100)
+  phone             String?      @db.VarChar(20)
+  siret             String?      @db.VarChar(20)
+  siren             String?      @db.VarChar(20)
+  tva               String?      @db.VarChar(20)
+  comment           String?      @db.VarChar(1000)
+  paymentDelay      Int?
+  paymentMethod     String?      @db.VarChar(20)
+  totalReceivable   Float        @default(0)
+  createdAt         DateTime     @default(now()) @db.Timestamp(0)
+  updatedAt         DateTime     @updatedAt @db.Timestamp(0)
+  document          document[]
+  receivable        receivable[]
+}
+
+model debt {
+  user          user      @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "debt_user_id")
+  supplier      supplier? @relation(fields: [supplier_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "debt_supplier_id")
+  id            Int       @id @default(autoincrement())
+  user_id       String    @db.VarChar(100)
+  supplier_id   Int?
+  supplier_name String    @db.VarChar(100)
+  name          String    @db.VarChar(100)
+  amount        Float
+  dueDate       DateTime  @db.Timestamp(0)
+  status        String    @db.VarChar(20)
+  renewalDate   DateTime? @db.Timestamp(0)
+  renewalType   String?   @db.VarChar(20)
+  comment       String?   @db.VarChar(1000)
+  createdAt     DateTime  @default(now()) @db.Timestamp(0)
+  updatedAt     DateTime  @updatedAt @db.Timestamp(0)
+}
+
+model document {
+  user                    user              @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "document_user_id")
+  client                  client            @relation(fields: [client_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "document_client_id")
+  id                      Int               @id @default(autoincrement())
+  user_id                 String            @db.VarChar(100)
+  client_id               Int
+  type                    String            @db.VarChar(20)
+  number                  String            @db.VarChar(20)
+  date                    DateTime          @db.Timestamp(0)
+  dueDate                 DateTime          @db.Timestamp(0)
+  legalForm               String            @db.VarChar(10)
+  name                    String            @db.VarChar(100)
+  address                 String            @db.VarChar(100)
+  addressComplement       String?           @db.VarChar(100)
+  zipCode                 String            @db.VarChar(10)
+  city                    String            @db.VarChar(100)
+  clientLegalForm         String?           @db.VarChar(10)
+  clientName              String            @db.VarChar(100)
+  clientAddress           String            @db.VarChar(100)
+  clientAddressComplement String?           @db.VarChar(100)
+  clientZipCode           String            @db.VarChar(10)
+  clientCity              String            @db.VarChar(100)
+  totalHT                 Float
+  totalTTC                Float
+  totalTVA                Float
+  additionnalCostName     String?           @db.VarChar(100)
+  additionnalCostAmount   Float?
+  generalDiscountRate     Float?
+  generalDiscountAmount   Float?
+  specialMention          String?           @db.VarChar(1000)
+  status                  String            @db.VarChar(20)
+  documentLink            String?           @unique(map: "documentLink_unique") @db.VarChar(1000)
+  createdAt               DateTime          @default(now()) @db.Timestamp(0)
+  documentProduct         documentProduct[]
+}
+
+model individual {
+  user      user     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "individual_user_id")
+  user_id   String   @id @db.VarChar(100)
+  firstName String   @db.VarChar(100)
+  lastName  String   @db.VarChar(100)
+  createdAt DateTime @default(now()) @db.Timestamp(0)
+  updatedAt DateTime @updatedAt @db.Timestamp(0)
+}
+
+model company {
+  user              user     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "company_user_id")
+  user_id           String   @id @db.VarChar(100)
+  legalForm         String   @db.VarChar(10)
+  name              String   @db.VarChar(100)
+  address           String   @db.VarChar(100)
+  addressComplement String?  @db.VarChar(100)
+  zipCode           String   @db.VarChar(10)
+  city              String   @db.VarChar(100)
+  siret             String   @unique @db.VarChar(20)
+  siren             String   @unique @db.VarChar(20)
+  tva               String   @unique @db.VarChar(20)
+  subscriber        Boolean  @default(false)
+  pastSubscriber    Boolean  @default(false)
+  createdAt         DateTime @default(now()) @db.Timestamp(0)
+  updatedAt         DateTime @updatedAt @db.Timestamp(0)
+}
+
+model subscription {
+  user      user     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "subscription_user_id")
+  user_id   String   @id @db.VarChar(100)
+  plan      String   @db.VarChar(20)
+  startDate DateTime @db.Timestamp(0)
+  endDate   DateTime @db.Timestamp(0)
+  createdAt DateTime @default(now()) @db.Timestamp(0)
+  updatedAt DateTime @updatedAt @db.Timestamp(0)
+}
+
+model user {
+  id                   String                 @id @default(uuid())
+  email                String                 @unique
+  password             String
+  phone                String?                @unique
+  role                 String                 @default("individual")
+  emailVerified        Boolean                @default(false)
+  lastLogout           DateTime               @default(now()) @db.Timestamp(0)
+  createdAt            DateTime               @default(now()) @db.Timestamp(0)
+  updatedAt            DateTime               @updatedAt @db.Timestamp(0)
+  client               client[]
+  debt                 debt[]
+  document             document[]
+  individual           individual[]
+  company              company[]
+  subscription         subscription[]
+  passwordModification passwordModification[]
+  emailVerification    emailVerification[]
+  product              product[]
+  receivable           receivable[]
+  supplier             supplier[]
+}
+
+model passwordModification {
+  user      user     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "passwordModification_user_id")
+  id        Int      @id @default(autoincrement())
+  user_id   String   @db.VarChar(100)
+  token     String   @unique
+  expiresAt DateTime @db.Timestamp(0)
+  createdAt DateTime @default(now()) @db.Timestamp(0)
+  updatedAt DateTime @updatedAt @db.Timestamp(0)
+}
+
+model emailVerification {
+  user      user     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "emailVerification_user_id")
+  id        Int      @id @default(autoincrement())
+  user_id   String   @db.VarChar(100)
+  token     String   @unique
+  expiresAt DateTime @db.Timestamp(0)
+  createdAt DateTime @default(now()) @db.Timestamp(0)
+  updatedAt DateTime @updatedAt @db.Timestamp(0)
+}
+
+model product {
+  user        user    @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "product_user_id")
+  id          Int     @id @default(autoincrement())
+  user_id     String  @db.VarChar(100)
+  shortId     String  @db.VarChar(20)
+  name        String  @db.VarChar(100)
+  description String? @db.VarChar(1000)
+  unit        String  @db.VarChar(20)
+  unitPrice   Float
+  tvaRate     Float
+}
+
+model documentProduct {
+  document     document @relation(fields: [document_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "documentProduct_document_id")
+  id           Int      @id @default(autoincrement())
+  document_id  Int
+  shortId      String   @db.VarChar(20)
+  name         String   @db.VarChar(100)
+  description  String?  @db.VarChar(1000)
+  unitPrice    Float
+  unit         String   @db.VarChar(20)
+  quantity     Float
+  tvaRate      Float
+  discountRate Float?
+  createdAt    DateTime @default(now()) @db.Timestamp(0)
+  updatedAt    DateTime @updatedAt @db.Timestamp(0)
+}
+
+model receivable {
+  user        user     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "receivable_user_id")
+  client      client?  @relation(fields: [client_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "receivable_client_id")
+  id          Int      @id @default(autoincrement())
+  user_id     String   @db.VarChar(100)
+  client_id   Int?
+  client_name String   @db.VarChar(100)
+  name        String   @db.VarChar(100)
+  amount      Float
+  dueDate     DateTime @db.Timestamp(0)
+  status      String   @db.VarChar(20)
+  comment     String?  @db.VarChar(1000)
+  createdAt   DateTime @default(now()) @db.Timestamp(0)
+  updatedAt   DateTime @updatedAt @db.Timestamp(0)
+}
+
+model supplier {
+  user              user     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "supplier_user_id")
+  id                Int      @id @default(autoincrement())
+  user_id           String   @db.VarChar(100)
+  legalForm         String?  @db.VarChar(10)
+  name              String   @db.VarChar(100)
+  address           String?  @db.VarChar(100)
+  addressComplement String?  @db.VarChar(100)
+  zipCode           String?  @db.VarChar(10)
+  city              String?  @db.VarChar(100)
+  siret             String?  @db.VarChar(20)
+  siren             String?  @db.VarChar(20)
+  tva               String?  @db.VarChar(20)
+  email             String   @db.VarChar(100)
+  phone             String?  @db.VarChar(20)
+  comment           String?  @db.VarChar(1000)
+  totalDebt         Float    @default(0)
+  createdAt         DateTime @default(now()) @db.Timestamp(0)
+  updatedAt         DateTime @updatedAt @db.Timestamp(0)
+  debt              debt[]
+}
