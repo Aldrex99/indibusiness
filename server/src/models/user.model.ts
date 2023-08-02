@@ -1,3 +1,5 @@
+import { Request } from 'express';
+
 export interface IUser {
   id: string;
   email: string;
@@ -31,4 +33,11 @@ export interface ISubscribedCompany extends ICompany {
   plan: string;
   startDate: Date;
   endDate: Date;
+}
+
+export interface IRequestUser extends Request {
+  user: {
+    id: string;
+    role?: string;
+  }
 }

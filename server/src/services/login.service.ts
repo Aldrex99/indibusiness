@@ -108,6 +108,17 @@ const getCompanyUser = async (user: IUser) => {
   }
 }
 
+export const getLastLogout = async (userId: string) => {
+  return prisma.user.findUnique({
+    where: {
+      id: userId
+    },
+    select: {
+      lastLogout: true
+    }
+  });
+}
+
 export const login = async (email: string, password: string) => {
   const user: IUser = await connectUser(email, password);
 
@@ -120,4 +131,18 @@ export const login = async (email: string, password: string) => {
     default:
       return user;
   }
+}
+
+export const logout = async (userId: string) => {
+  return prisma.user.update({
+    where: {
+      id: userId
+    },
+    data: {
+      lastLogout: new Date()
+    },
+    select: {
+      lastLogout: true
+    }
+  });
 }

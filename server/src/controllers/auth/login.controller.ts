@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { validationResult } from "express-validator";
 import * as loginService from "../../services/login.service";
 import * as token from "../../utils/tokens.util";
-import { IUser } from "../../models/user.model";
+import { IRequestUser, IUser } from "../../models/user.model";
 
 export const login = async (req: Request, res: Response, next: NextFunction) => {
   const errors = validationResult(req);
@@ -22,12 +22,40 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
     const accessToken = token.generateAccessToken(user.id, user.role);
     const refreshToken = token.generateRefreshToken(user.id);
 
+    res.cookie("accessToken", accessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+    });
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+    });
+
     return res.status(200).json({
       message: "Utilisateur connecté",
       user: user,
-      accessToken: accessToken,
-      refreshToken: refreshToken,
     });
+  } catch (err) {
+    if (err) {
+      return next(err);
+    }
+  }
+};
+
+export const logout = async (req: IRequestUser, res: Response, next: NextFunction) => {
+  try {
+    const effectiveLogout = await loginService.logout(req.user.id);
+
+    if (effectiveLogout) {
+      res.clearCookie("accessToken");
+      res.clearCookie("refreshToken");
+
+      return res.status(200).json({
+        message: "Utilisateur déconnecté",
+      });
+    }
   } catch (err) {
     if (err) {
       return next(err);

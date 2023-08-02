@@ -7,3 +7,15 @@ export const generateAccessToken = (userId: string, userRole: string) => {
 export const generateRefreshToken = (userId: string) => {
   return jwt.sign({userId}, process.env.REFRESH_TOKEN_SECRET!, {expiresIn: process.env.REFRESH_TOKEN_LIFETIME});
 }
+
+export const verifyAccessToken = async (token: string) => {
+  return jwt.verify(token, process.env.ACCESS_TOKEN_SECRET!);
+}
+
+export const verifyRefreshToken = async (token: string) => {
+  return jwt.verify(token, process.env.REFRESH_TOKEN_SECRET!);
+}
+
+export const decodeToken = async (token: string) => {
+  return jwt.decode(token);
+}

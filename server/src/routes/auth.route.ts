@@ -4,6 +4,7 @@ import * as registerController from "../controllers/auth/register.controller";
 import * as registerValidator from "../validators/register.validator";
 import * as loginController from "../controllers/auth/login.controller";
 import * as loginValidator from "../validators/login.validator";
+import * as tokenMiddleware from "../middlewares/tokens.middleware";
 
 const router: Router = Router();
 
@@ -16,5 +17,8 @@ router.post("/verify-email", registerValidator.verifyEmail, registerController.v
 
 // POST api/auth/login - Login
 router.post("/login", loginValidator.login, loginController.login);
+
+// GET api/auth/logout - Logout
+router.get("/logout", tokenMiddleware.checkRefreshToken, loginController.logout);
 
 export default router;
