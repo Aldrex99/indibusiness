@@ -25,13 +25,6 @@ export const checkAccessToken = async (req: IRequestUser, res: Response, next: N
       });
     }
 
-    if (rawUser.exp < Date.now() / 1000) {
-      return res.status(403).json({
-        code: 403,
-        message: "Votre token n'est plus valide",
-      });
-    }
-
     req.user = {
       id: rawUser.id,
       role: rawUser.role,
@@ -40,6 +33,13 @@ export const checkAccessToken = async (req: IRequestUser, res: Response, next: N
     next();
   } catch (err) {
     if (err) {
+      if (err.name === "TokenExpiredError") {
+        return res.status(403).json({
+          code: 432,
+          message: "accessToken expiré",
+        });
+      }
+
       return res.status(403).json({
         code: 403,
         message: "Votre token n'est pas valide",
@@ -77,13 +77,6 @@ export const checkRefreshToken = async (req: IRequestUser, res: Response, next: 
       });
     }
 
-    if (rawUser.exp < Date.now() / 1000) {
-      return res.status(403).json({
-        code: 403,
-        message: "Votre token n'est plus valide",
-      });
-    }
-
     req.user = {
       id: rawUser.userId,
     }
@@ -91,17 +84,13 @@ export const checkRefreshToken = async (req: IRequestUser, res: Response, next: 
     next();
   } catch (err) {
     if (err) {
-      /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-      const decodedToken: any = await token.decodeToken(refreshToken);
-
-      if (decodedToken) {
-        const reinitialisationAccount = loginService.logout(decodedToken.userId);
-
-        if (reinitialisationAccount) {
-          res.clearCookie("accessToken");
-          res.clearCookie("refreshToken");
-        }
+      if (err.name === "TokenExpiredError") {
+        return res.status(403).json({
+          code: 433,
+          message: "refreshToken expiré",
+        });
       }
+
       return res.status(403).json({
         code: 403,
         message: "Votre token n'est pas valide",

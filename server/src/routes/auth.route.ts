@@ -18,6 +18,12 @@ router.post("/verify-email", registerValidator.verifyEmail, registerController.v
 // POST api/auth/login - Login
 router.post("/login", loginValidator.login, loginController.login);
 
+// GET api/auth/check-login - Check if the user is already logged
+router.get("/check-login", tokenMiddleware.checkRefreshToken, loginController.checkLogin);
+
+// GET api/auth/refresh-token - Refresh token
+router.get("/refresh-token", tokenMiddleware.checkRefreshToken, loginController.refresh);
+
 // GET api/auth/logout - Logout
 router.get("/logout", tokenMiddleware.checkRefreshToken, loginController.logout);
 

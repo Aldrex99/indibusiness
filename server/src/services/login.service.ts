@@ -133,6 +133,55 @@ export const login = async (email: string, password: string) => {
   }
 }
 
+export const check = async (userId: string) => {
+  const user: IUser = await prisma.user.findUnique({
+    where: {
+      id: userId
+    },
+    select: {
+      id: true,
+      email: true,
+      phone: true,
+      role: true,
+      emailVerified: true,
+      createdAt: true,
+      updatedAt: true,
+    }
+  });
+
+  if (!user) {
+    throw new Error("Utilisateur non trouvé");
+  }
+
+  switch (user.role) {
+    case "individual":
+      return await getIndividualUser(user);
+    case "freeCompany":
+    case "premiumCompany":
+      return await getCompanyUser(user);
+    default:
+      return user;
+  }
+}
+
+export const refresh = async (userId: string) => {
+  const user = await prisma.user.findUnique({
+    where: {
+      id: userId
+    },
+    select: {
+      id: true,
+      role: true,
+    }
+  });
+
+  if (!user) {
+    throw new Error("Utilisateur non trouvé");
+  }
+
+  return user;
+}
+
 export const logout = async (userId: string) => {
   return prisma.user.update({
     where: {
