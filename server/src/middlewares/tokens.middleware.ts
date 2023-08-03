@@ -26,8 +26,8 @@ export const checkAccessToken = async (req: IRequestUser, res: Response, next: N
     }
 
     req.user = {
-      id: rawUser.id,
-      role: rawUser.role,
+      id: rawUser.userId,
+      role: rawUser.userRole,
     }
 
     next();
