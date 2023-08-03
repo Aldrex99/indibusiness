@@ -7,6 +7,8 @@ import express, {Application} from 'express';
 import applyMiddlewares from "./middlewares/index.middleware";
 import errorHandler from "./middlewares/errorHandler.middleware";
 
+import auth from "./routes/auth.route";
+
 /* Creating the application */
 const app: Application = express();
 
@@ -14,6 +16,8 @@ const app: Application = express();
 applyMiddlewares(app);
 
 /* Setting up the routes */
+// /api/auth
+app.use("/api/auth", auth);
 
 
 /* Applying error handler */

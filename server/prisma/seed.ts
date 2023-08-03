@@ -32,8 +32,8 @@ async function main() {
         emailVerified: true,
         individual: {
           create: {
-            firstName: 'Free',
-            lastName: 'User',
+            firstname: 'Free',
+            lastname: 'User',
           }
         }
       },
