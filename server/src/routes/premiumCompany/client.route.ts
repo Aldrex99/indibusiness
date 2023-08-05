@@ -17,7 +17,7 @@ router.get("/", clientController.getAllClients);
 router.get("/:id", clientController.getClient);
 
 // PUT api/premium-company/client/:id - Update a client
-router.put("/:id", clientController.updateClient);
+router.put("/:id", clientValidator.updateClient, clientController.updateClient);
 
 // DELETE api/premium-company/client/:id - Delete a client
 router.delete("/:id", clientController.deleteClient);

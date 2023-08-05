@@ -72,7 +72,7 @@ export const getAllClients = async (req: IRequestUser, res: Response, next: Next
     const clients = await clientService.getAllClients(userId);
 
     return res.status(200).json({
-      message: "Clients récupérés",
+      message: "Liste des clients",
       clients: clients,
     });
   } catch (err) {
@@ -90,7 +90,7 @@ export const getClient = async (req: IRequestUser, res: Response, next: NextFunc
     const client = await clientService.getClient(userId, clientId);
 
     return res.status(200).json({
-      message: "Client récupéré",
+      message: "Client trouvé",
       client: client,
     });
   } catch (err) {
@@ -140,7 +140,7 @@ export const updateClient = async (req: IRequestUser, res: Response, next: NextF
     });
 
     return res.status(200).json({
-      message: "Client modifié",
+      message: "Client mis à jour",
       client: client,
     });
   } catch (err) {

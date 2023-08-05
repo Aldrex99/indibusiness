@@ -1,6 +1,6 @@
 import { body } from 'express-validator';
 
-export const createClient = [
+export const createSupplier = [
   body('legalForm')
     .optional()
     .isString().withMessage('La forme juridique doit être une chaîne de caractères'),
@@ -45,21 +45,12 @@ export const createClient = [
   body('comment')
     .optional()
     .isString().withMessage('Le commentaire doit être une chaîne de caractères'),
-  body('paymentDelay')
+  body('totalDebt')
     .optional()
-    .isNumeric().withMessage('Le délai de paiement doit être un nombre'),
-  body('paymentMethod')
-    .optional()
-    .isString().withMessage('Le mode de paiement doit être une chaîne de caractères'),
-  body('totalReceivable')
-    .optional()
-    .isNumeric().withMessage('Le total des créances doit être un nombre'),
+    .isNumeric().withMessage('Le total des dettes doit être un nombre'),
 ];
 
-export const updateClient = [
-  body('user_id')
-    .optional()
-    .isString().withMessage('L\'id de l\'utilisateur doit être une chaîne de caractères'),
+export const updateSupplier = [
   body('legalForm')
     .optional()
     .isString().withMessage('La forme juridique doit être une chaîne de caractères'),
@@ -104,13 +95,7 @@ export const updateClient = [
   body('comment')
     .optional()
     .isString().withMessage('Le commentaire doit être une chaîne de caractères'),
-  body('paymentDelay')
+  body('totalDebt')
     .optional()
-    .isNumeric().withMessage('Le délai de paiement doit être un nombre'),
-  body('paymentMethod')
-    .optional()
-    .isString().withMessage('Le mode de paiement doit être une chaîne de caractères'),
-  body('totalReceivable')
-    .optional()
-    .isNumeric().withMessage('Le total des créances doit être un nombre'),
+    .isNumeric().withMessage('Le total des dettes doit être un nombre'),
 ];
