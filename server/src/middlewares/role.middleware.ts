@@ -1,7 +1,7 @@
 import { IRequestUser } from "../models/user.model";
 import { Response, NextFunction } from "express";
 
-export const checkUserRole = (roles: string[]) => {
+const checkUserRole = (roles: string[]) => {
   return (req: IRequestUser, res: Response, next: NextFunction) => {
     const user = req.user;
     if (user && roles.includes(user.role)) {
@@ -12,3 +12,5 @@ export const checkUserRole = (roles: string[]) => {
     }
   }
 }
+
+export default checkUserRole;
