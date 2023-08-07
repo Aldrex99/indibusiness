@@ -4,6 +4,7 @@ import { Router } from "express";
 import client from "./client.route";
 import supplier from "./supplier.route";
 import debt from "./debt.route";
+import receivable from "./receivable.route";
 
 const router: Router = Router();
 
@@ -17,8 +18,9 @@ router.use("/supplier", supplier);
 // api/premium-company/debt
 router.use("/debt", debt);
 
+// api/premium-company/receivable
+router.use("/receivable", receivable);
 
-// router.use("/receivable", receivable);
 // router.use("/document", document);
 
 export default router;
