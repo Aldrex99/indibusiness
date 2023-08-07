@@ -10,16 +10,16 @@ const router: Router = Router();
 // POST api/premium-company/debt - Create a debt
 router.post("/", debtValidator.createDebt, debtController.createDebt);
 
-// GET api/premium-company/debt - Get all debts
-router.get("/", debtValidator.getFilteredDebts, debtController.getFilteredDebts);
+// GET api/premium-company/debt/get - Get all debts
+router.post("/get", debtValidator.getFilteredDebts, debtController.getFilteredDebts);
 
-// GET api/premium-company/debt/:id - Get a debt
-router.get("/:id", debtController.getDebt);
+// GET api/premium-company/debt/get/:id - Get a debt
+router.get("/get/:id", debtController.getDebt);
 
-// PUT api/premium-company/debt/:id - Update a debt
-router.put("/:id", debtValidator.updateDebt, debtController.updateDebt);
+// PUT api/premium-company/debt/update/:id - Update a debt
+router.put("/update/:id", debtValidator.updateDebt, debtController.updateDebt);
 
-// DELETE api/premium-company/debt/:id - Delete a debt
-router.delete("/:id", debtController.deleteDebt);
+// DELETE api/premium-company/debt/delete/:id - Delete a debt
+router.delete("/delete/:id", debtController.deleteDebt);
 
 export default router;

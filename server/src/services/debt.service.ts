@@ -16,10 +16,14 @@ export const getFilteredDebts = async (data: IGetFilteredDebts) => {
 
   if (data.search) {
     whereClause["OR"] = [
-      {name: {contains: data.search}},
-      {supplier_name: {contains: data.search}},
-      {amount: {equals: parseFloat(data.search)}},
+      {name: {contains: data.search, mode: 'insensitive'}},
+      {supplier_name: {contains: data.search, mode: 'insensitive'}},
     ]
+
+    const amountValue = parseFloat(data.search);
+    if (!isNaN(amountValue)) {
+      whereClause["OR"].push({amount: {equals: amountValue}});
+    }
   }
 
   if (data.status) {
