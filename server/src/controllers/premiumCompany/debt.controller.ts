@@ -124,17 +124,19 @@ export const updateDebt = async (req: IRequestUser, res: Response, next: NextFun
     supplier_name,
     name,
     amount,
-    dueDate,
     status,
     renewalDate,
     renewalType,
     comment
   }: Partial<IDebt> = req.body;
 
+  let dueDate: string;
+  if (req.body.dueDate) {
+    dueDate = convertDateToISO8601(req.body.dueDate);
+  }
+
   try {
     const oldDebt = await debtService.getDebt(user_id, debt_id);
-
-    console.log(oldDebt);
 
     if (amount && oldDebt[0].amount !== amount) {
       if (status && oldDebt[0].status !== status && oldDebt[0].supplier_id) {

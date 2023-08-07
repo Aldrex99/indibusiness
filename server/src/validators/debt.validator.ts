@@ -8,7 +8,7 @@ export const createDebt = [
     .isString()
     .withMessage("Le nom de la dette doit être une chaîne de caractères"),
   body("amount")
-    .isFloat({min: 0})
+    .isFloat()
     .withMessage("Le montant de la dette doit être un nombre positif"),
   body("dueDate")
     .isDate()
