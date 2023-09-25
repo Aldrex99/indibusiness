@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <link href="./document.style.css" rel="stylesheet">
+</head>
+<body>
+<div class="a4">
+  <header class="postal-information">
+    <section class="my-information">
+      <h1 class="my-name">{{my.legalForm}} {{my.name}}</h1>
+      <p class="my-address">{{my.address}}</p>
+      {{#if my.addressComp}}
+      <p class="my-address-comp">{{my.addressComp}}</p>
+      {{/if}}
+      <p class="my-city">{{my.zipCode}}, {{my.city}}</p>
+      <p class="my-siren">SIREN : {{my.siren}}</p>
+      <p class="my-tva">Numéro de TVA intracommunautaire :<br/>{{my.tva}}</p>
+    </section>
+    <section class="client-information">
+      <div class="right">
+        <h1 class="client-name">{{#if client.legalForm}}<span>{{client.legalForm}} </span>{{/if}}{{client.name}}</h1>
+        <p class="client-address">{{client.address}}</p>
+        {{#if client.addressComp}}
+        <p class="client-address-comp">{{client.addressComp}}</p>
+        {{/if}}
+        <p class="client-city">{{client.zipCode}}, {{client.city}}</p>
+      </div>
+    </section>
+  </header>
+  <section class="document-information">
+    <h1 class="document-type-number">{{document.type}} N° {{document.number}}</h1>
+    <div class="document-information-content">
+      <p class="date">Date d'émission : {{document.date}}</p>
+      {{#if document.type !== 'Devis'}}
+      <p class="dueDate">Date d'échéance : {{document.dueDate}}</p>
+      {{/if}}
+    </div>
+  </section>
+  <section class="document-product">
+    <table>
+      <thead>
+      <tr>
+        <th class="column name-desc-h" scope="col">Nom et Description</th>
+        <th class="column quantity-h" scope="col">Qté</th>
+        <th class="column unitary-price-HT-h" scope="col">Prix unitaire HT</th>
+        <th class="column discount-rate" scope="col">Tx. Remise</th>
+        <th class="column total-price-HT-h" scope="col">Total HT</th>
+        <th class="column tva-h" scope="col">Tx. TVA</th>
+        <th class="column total-price-TTC-h" scope="col">Total TTC</th>
+      </tr>
+      </thead>
+      <tbody>
+      {{#each product}}
+      <tr>
+        <td class="column name-desc"><span
+          class="product-name">{{name}}</span><br/>
+          <span class="product-desc">{{description}}</span>
+        </td>
+        <td class="column quantity">{{quantity}} {{unit}}</td>
+        <td class="column unitary-price-HT">{{unitaryExclTvaPrice}}</td>
+        <td class="column discount-rate">{{discountRate}} %</td>
+        <td class="column total-price-HT">{{totalExclTvaPrice}}</td>
+        <td class="column tva">{{tvaRate}} %</td>
+        <td class="column total-price-TTC">{{totalInclTvaPrice}}</td>
+      </tr>
+      {{/each}}
+      </tbody>
+      <tfoot>
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      </tfoot>
+    </table>
+  </section>
+  <div class="footer">
+    <section class="footer-left">
+      <div class="tva-part">
+        <table>
+          <thead>
+          <tr>
+            <th class="column">% TVA</th>
+            <th class="column">Base de calcul</th>
+            <th class="column">Total</th>
+          </tr>
+          </thead>
+          <tbody>
+          {{#each tva}}
+          <tr>
+            <td class="first-column">{{tvaRate}} %</td>
+            <td class="column">{{totalExclTvaPrice}}</td>
+            <td class="column">{{totalTva}}</td>
+          </tr>
+          {{/each}}
+          </tbody>
+        </table>
+      </div>
+      {{#if document.specialMention}}
+      <div class="special-part">
+        <p>{{document.specialMention}}</p>
+      </div>
+      {{/if}}
+    </section>
+    <section class="footer-right">
+      <div class="total-part">
+        <table>
+          <tbody>
+          {{#if total.generalDiscountRate}}
+          <tr>
+            <td class="column">Montant HT av. remise</td>
+            <td class="column">{{total.totalExclTvaPricePreDiscount}} €</td>
+          </tr>
+          <tr>
+            <td class="column">Remise {{total.generalDiscountRate}} %</td>
+            <td class="column">{{total.generalDiscountAmount}} €</td>
+          </tr>
+          {{/if}}
+          {{#if total.additionalCostName}}
+          <tr>
+            <td class="column">{{total.additionalCostName}}</td>
+            <td class="column">{{total.additionalCostAmount}} €</td>
+          </tr>
+          {{/if}}
+          <tr>
+            <td class="column">Montant HT</td>
+            <td class="column">{{total.totalExclTvaPrice}} €</td>
+          </tr>
+          <tr>
+            <td class="column">Montant TVA</td>
+            <td class="column">{{total.totalTva}} €</td>
+          </tr>
+          <tr>
+            <td class="column">Montant TTC</td>
+            <td class="column">{{total.totalInclTvaPrice}} €</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+</div>
+</body>
+</html>

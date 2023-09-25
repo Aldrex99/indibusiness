@@ -60,7 +60,7 @@ model document {
   type                    String            @db.VarChar(20)
   number                  String            @db.VarChar(20)
   date                    DateTime          @db.Timestamp(0)
-  dueDate                 DateTime          @db.Timestamp(0)
+  dueDate                 DateTime?         @db.Timestamp(0)
   legalForm               String            @db.VarChar(10)
   name                    String            @db.VarChar(100)
   address                 String            @db.VarChar(100)
