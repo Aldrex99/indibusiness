@@ -76,8 +76,8 @@ model document {
   totalHT                 Float
   totalTTC                Float
   totalTVA                Float
-  additionnalCostName     String?           @db.VarChar(100)
-  additionnalCostAmount   Float?
+  additionalCostName      String?           @db.VarChar(100)
+  additionalCostAmount    Float?
   generalDiscountRate     Float?
   generalDiscountAmount   Float?
   specialMention          String?           @db.VarChar(1000)

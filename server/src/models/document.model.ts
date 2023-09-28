@@ -4,7 +4,7 @@ export type TMyInformation = {
   legalForm: string;
   name: string;
   address: string;
-  addressComp?: string;
+  addressComplement?: string;
   zipCode: string;
   city: string;
   siren: string;
@@ -15,7 +15,7 @@ export type TClientInformation = {
   legalForm?: string;
   name: string;
   address: string;
-  addressComp?: string;
+  addressComplement?: string;
   zipCode: string;
   city: string;
 }
@@ -64,13 +64,13 @@ export interface IDocumentCreate {
   legalForm: string;
   name: string;
   address: string;
-  addressComp?: string;
+  addressComplement?: string;
   zipCode: string;
   city: string;
   clientLegalForm?: string;
   clientName: string;
   clientAddress: string;
-  clientAddressComp?: string;
+  clientAddressComplement?: string;
   clientZipCode: string;
   clientCity: string;
   totalHT: number;

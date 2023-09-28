@@ -17,5 +17,12 @@ export const convertISO8601ToSlashDate = (ISOString: string) => {
   const month = date.getMonth() + 1;
   const day = date.getDate();
 
+  if (month < 10) {
+    if (day < 10) {
+      return `0${day}/0${month}/${year}`;
+    }
+    return `${day}/0${month}/${year}`;
+  }
+
   return `${day}/${month}/${year}`;
 }

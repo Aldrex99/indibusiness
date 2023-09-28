@@ -1,5 +1,6 @@
 import prismaCreation from "../utils/prisma.util";
 import { IProductDocumentCreation } from "../models/product.model";
+import { documentProduct, Prisma } from "@prisma/client";
 
 const prisma = prismaCreation();
 
@@ -23,7 +24,7 @@ export const savedProductDelete = async () => {
   // TODO : Delete a saved product from the database
 }
 
-export const documentProductCreate = (data: IProductDocumentCreation) => {
+export const documentProductCreate = (data: IProductDocumentCreation) : Prisma.Prisma__documentProductClient<documentProduct> => {
   return prisma.documentProduct.create({
     data: {
       ...data

@@ -3,7 +3,236 @@
 <head>
   <meta charset="UTF-8">
   <title>Document</title>
-  <link href="./document.style.css" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #000;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+
+    .a4 {
+      width: 210mm;
+      height: 297mm;
+      max-width: 210mm;
+      max-height: 297mm;
+      position: relative;
+      margin: 0 auto;
+      background-color: #fff;
+    }
+
+    .postal-information {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .my-name, .client-name {
+      font-size: x-large;
+      font-weight: bold;
+      margin-bottom: 1px;
+    }
+
+    .my-address, .my-address-comp, .my-city, .my-siren, .my-tva, .client-address, .client-address-comp, .client-city {
+      font-size: large;
+      margin-bottom: 2px;
+    }
+
+    .client-information {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+    }
+
+    .client-information .right {
+      max-width: 50%;
+    }
+
+    .document-information {
+      margin-top: 20px;
+    }
+
+    .document-type-number {
+      font-size: x-large;
+      font-weight: bold;
+      margin-bottom: 1px;
+      padding-left: 2mm;
+      color: #525252;
+    }
+
+    .document-information-content {
+      margin: 8px 0;
+      padding: 8px 0 8px 2mm;
+      font-size: large;
+      border-top: 1px solid #525252;
+      border-bottom: 1px solid #525252;
+    }
+
+    .document-product {
+      border: #444444 1px solid;
+      margin-top: 20px;
+      margin-right: 1px;
+    }
+
+    .document-product table {
+      border-collapse: collapse;
+      width: 100%;
+      max-width: 210mm;
+      height: 125mm;
+      max-height: 125mm;
+    }
+
+    .document-product table th, .document-product table td {
+      border-right: 1px solid black;
+      padding: 5px;
+      font-size: small;
+    }
+
+    .document-product table th:last-child, .document-product table td:last-child {
+      border-right: none;
+    }
+
+    .document-product table tr th {
+      border-bottom: 1px solid black;
+      width: 10mm;
+      max-width: 10mm;
+      height: 6mm;
+      max-height: 6mm;
+    }
+
+    .document-product table tr td.column {
+      text-align: right;
+      overflow-x: clip;
+      width: 10mm;
+      max-width: 10mm;
+    }
+
+    .document-product table tr th:first-child {
+      width: 45%;
+      max-width: 94mm;
+    }
+
+    .document-product table tr td:first-child {
+      width: 45%;
+      max-width: 94mm;
+      text-align: left;
+    }
+
+    .document-product table tbody tr td {
+      height: 6mm;
+      vertical-align: center;
+    }
+
+    span.product-name {
+      font-weight: bold;
+      font-size: small;
+    }
+
+    span.product-desc {
+      padding-left: 2mm
+    }
+
+    .document-product table tfoot {
+      height: 100%;
+    }
+
+    .footer {
+      margin-top: 25px;
+      display: inline-block;
+      width: 100%;
+    }
+
+    .footer-left {
+      width: 50%;
+      float: left;
+    }
+
+    .tva-part table {
+      width: 75%;
+      border: 1px solid black;
+      text-align: center;
+      border-collapse: collapse;
+    }
+
+    .tva-part table th:last-child, .tva-part table td:last-child {
+      border-right: none;
+    }
+
+    .tva-part table th, .tva-part table td {
+      border: 1px solid black;
+      padding: 1px 5px;
+      font-size: small;
+    }
+
+    .tva-part table th tr {
+      border-bottom: 1px solid black;
+      text-align: center;
+      height: 6mm;
+      max-height: 6mm;
+    }
+
+    .tva-part table tbody tr td.column {
+      text-align: right;
+      overflow-x: clip;
+    }
+
+    .tva-part table tbody tr td {
+      height: 6mm;
+      vertical-align: center;
+    }
+
+    .special-part {
+      margin-top: 10px;
+      width: 100%;
+      max-width: 105mm;
+      font-size: small;
+    }
+
+    .footer-right {
+      width: 50%;
+      float: right;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+    }
+
+    .total-part table {
+      width: 75%;
+      max-width: 105mm;
+      border-collapse: collapse;
+      position: absolute;
+      right: 1px;
+      border: 1px solid black;
+    }
+
+    .total-part table th:last-child, .total-part table td:last-child {
+      border-right: none;
+    }
+
+    .total-part table td {
+      padding: 1px 5px;
+      font-size: small;
+      border: 1px solid black;
+    }
+
+    .total-part table tr td.column {
+      overflow-x: clip;
+      text-align: right;
+    }
+
+    .total-part table tr td:first-child {
+      text-align: left;
+      font-weight: bold;
+    }
+
+    .total-part table tbody tr td {
+      height: 6mm;
+      vertical-align: center;
+    }
+  </style>
 </head>
 <body>
 <div class="a4">
@@ -11,8 +240,8 @@
     <section class="my-information">
       <h1 class="my-name">{{my.legalForm}} {{my.name}}</h1>
       <p class="my-address">{{my.address}}</p>
-      {{#if my.addressComp}}
-      <p class="my-address-comp">{{my.addressComp}}</p>
+      {{#if my.addressComplement}}
+      <p class="my-address-comp">{{my.addressComplement}}</p>
       {{/if}}
       <p class="my-city">{{my.zipCode}}, {{my.city}}</p>
       <p class="my-siren">SIREN : {{my.siren}}</p>
@@ -22,8 +251,8 @@
       <div class="right">
         <h1 class="client-name">{{#if client.legalForm}}<span>{{client.legalForm}} </span>{{/if}}{{client.name}}</h1>
         <p class="client-address">{{client.address}}</p>
-        {{#if client.addressComp}}
-        <p class="client-address-comp">{{client.addressComp}}</p>
+        {{#if client.addressComplement}}
+        <p class="client-address-comp">{{client.addressComplement}}</p>
         {{/if}}
         <p class="client-city">{{client.zipCode}}, {{client.city}}</p>
       </div>
@@ -33,9 +262,9 @@
     <h1 class="document-type-number">{{document.type}} N° {{document.number}}</h1>
     <div class="document-information-content">
       <p class="date">Date d'émission : {{document.date}}</p>
-      {{#if document.type !== 'Devis'}}
+      {{#neq document.type 'Devis'}}
       <p class="dueDate">Date d'échéance : {{document.dueDate}}</p>
-      {{/if}}
+      {{/neq}}
     </div>
   </section>
   <section class="document-product">
@@ -52,7 +281,7 @@
       </tr>
       </thead>
       <tbody>
-      {{#each product}}
+      {{#each products}}
       <tr>
         <td class="column name-desc"><span
           class="product-name">{{name}}</span><br/>

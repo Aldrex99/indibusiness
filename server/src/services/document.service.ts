@@ -1,6 +1,11 @@
 import prismaCreation from "../utils/prisma.util";
-import * as PDFUtil from "../utils/pdf.util";
-import { IDocumentCreate, IGetFilteredDocuments } from "../models/document.model";
+import { documentPDFCreation } from "../utils/pdf.util";
+import { IDocumentCreate, IDocumentCreatePDF, IGetFilteredDocuments } from "../models/document.model";
+import puppeteer from "puppeteer";
+import { IProductDocumentCreation } from "../models/product.model";
+import { s3Client } from "../utils/objectStorage.util";
+import { GetObjectCommand, PutObjectCommand } from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
 const prisma = prismaCreation();
 
@@ -57,15 +62,68 @@ export const getDocumentInformations = async (userId: string, documentId: number
   });
 }
 
-export const documentPDFCreation = async (data: any) => {
-  // TODO : Create the document PDF
-  // TODO : Save the document PDF in Object Storage
+export const PDFGenerateAndUpload = async (document: IDocumentCreatePDF, products: IProductDocumentCreation[]) => {
+  const content = documentPDFCreation(document, products);
+
+  const browser = await puppeteer.launch();
+
+  try {
+    const page = await browser.newPage();
+
+    await page.setContent(content ? content : "");
+
+    const pdfBuffer = await page.pdf({
+      format: "A4",
+      margin: {
+        top: "10mm",
+        bottom: "10mm",
+        left: "10mm",
+        right: "10mm",
+      }
+    });
+
+    const uploadParams = {
+      Bucket: process.env.AWS_BUCKET_NAME,
+      Key: document.documentLink,
+      Body: pdfBuffer,
+      ContentType: 'application/pdf',
+      ACL: 'private',
+    }
+
+    await s3Client.send(new PutObjectCommand(uploadParams));
+
+    return true;
+  } catch (error) {
+    console.log("Error while generating PDF", error);
+  } finally {
+    await browser.close();
+  }
+};
+
+export const downloadDocumentSignedURL = async (documentLink: string) => {
+  try {
+    if (!documentLink) return null;
+
+    const command = new GetObjectCommand({
+      Bucket: process.env.AWS_BUCKET_NAME,
+      Key: documentLink,
+    });
+
+    return await getSignedUrl(s3Client, command, {expiresIn: Number(process.env.AWS_SIGNED_URL_EXPIRATION_TIME)});
+  } catch (error) {
+    console.log("Error while generating signed URL", error);
+    throw error;
+  }
 }
 
-export const downloadDocuments = async () => {
-  // TODO : Download the document PDF
-}
-
-export const downloadManyDocuments = async () => {
-  // TODO : Download many documents PDF
+export const updateStatusDocument = async (userId: string, documentId: number, status: string) => {
+  return prisma.document.updateMany({
+    where: {
+      id: documentId,
+      user_id: userId
+    },
+    data: {
+      status
+    }
+  });
 }

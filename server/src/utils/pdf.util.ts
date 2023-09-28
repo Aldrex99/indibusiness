@@ -12,19 +12,23 @@ import { convertISO8601ToSlashDate } from "./dateFormat.util";
 import path from "path";
 import fs from "fs";
 import handlebars from "handlebars";
+import { translateType } from "./translateTypeStatus.util";
 
 const formatProductsDocument = (productsDocument: IProductDocumentCreation[]): TProductDocument[] => {
   return productsDocument.map((productDocument: IProductDocumentCreation) => {
+    if (!productDocument.discountRate) {
+      productDocument.discountRate = 0;
+    }
     return {
       name: productDocument.name,
       description: productDocument.description,
       quantity: productDocument.quantity,
       unit: productDocument.unit,
-      unitaryExclTvaPrice: productDocument.unitPrice,
+      unitaryExclTvaPrice: parseFloat(productDocument.unitPrice.toFixed(2)),
       discountRate: productDocument.discountRate,
-      totalExclTvaPrice: productDocument.quantity * productDocument.unitPrice * (1 - productDocument.discountRate / 100),
+      totalExclTvaPrice: parseFloat((productDocument.quantity * productDocument.unitPrice * (1 - productDocument.discountRate / 100)).toFixed(2)),
       tvaRate: productDocument.tvaRate,
-      totalInclTvaPrice: productDocument.quantity * productDocument.unitPrice * (1 - productDocument.discountRate / 100) * (1 + productDocument.tvaRate / 100),
+      totalInclTvaPrice: parseFloat((productDocument.quantity * productDocument.unitPrice * (1 - productDocument.discountRate / 100) * (1 + productDocument.tvaRate / 100)).toFixed(2)),
     }
   });
 }
@@ -45,8 +49,11 @@ const formatTvaInformation = (productsDocument: TProductDocument[], generalDisco
 
     productsDocument.forEach((productDocument: TProductDocument) => {
       if (productDocument.tvaRate === tvaRate) {
-        totalExclTvaPrice += productDocument.totalExclTvaPrice * (1 - generalDiscountRate / 100);
-        totalTva += productDocument.totalExclTvaPrice * productDocument.tvaRate / 100 * (1 - generalDiscountRate / 100);
+        if (!generalDiscountRate) {
+          generalDiscountRate = 0;
+        }
+        totalExclTvaPrice += parseFloat((productDocument.totalExclTvaPrice * (1 - generalDiscountRate / 100)).toFixed(2));
+        totalTva += parseFloat((productDocument.totalExclTvaPrice * productDocument.tvaRate / 100 * (1 - generalDiscountRate / 100)).toFixed(2));
       }
     });
 
@@ -67,10 +74,17 @@ const formatTotalInformation = (productsDocument: TProductDocument[], generalDis
   let totalInclTvaPrice = 0;
 
   productsDocument.forEach((productDocument: TProductDocument) => {
-    totalExclTvaPricePreDiscount += productDocument.totalExclTvaPrice;
-    totalExclTvaPrice += productDocument.totalExclTvaPrice * (1 - generalDiscountRate / 100);
-    totalTva += productDocument.totalExclTvaPrice * productDocument.tvaRate / 100 * (1 - generalDiscountRate / 100);
-    totalInclTvaPrice += productDocument.totalInclTvaPrice * (1 - generalDiscountRate / 100);
+    if (!generalDiscountRate) {
+      generalDiscountRate = 0;
+    }
+    if (!additionalCostAmount) {
+      additionalCostAmount = 0;
+    }
+
+    totalExclTvaPricePreDiscount += parseFloat(productDocument.totalExclTvaPrice.toFixed(2));
+    totalExclTvaPrice += parseFloat((productDocument.totalExclTvaPrice * (1 - generalDiscountRate / 100)).toFixed(2));
+    totalTva += parseFloat((productDocument.totalExclTvaPrice * productDocument.tvaRate / 100 * (1 - generalDiscountRate / 100)).toFixed(2));
+    totalInclTvaPrice += parseFloat((productDocument.totalInclTvaPrice * (1 - generalDiscountRate / 100)).toFixed(2));
   });
 
   if (additionalCostName && additionalCostAmount) {
@@ -99,7 +113,7 @@ const formatMyClientAndDocumentInformation = (document: IDocumentCreatePDF): {
       legalForm: document.legalForm,
       name: document.name,
       address: document.address,
-      addressComp: document.addressComp,
+      addressComplement: document.addressComplement,
       zipCode: document.zipCode,
       city: document.city,
       siren: document.siren,
@@ -109,24 +123,24 @@ const formatMyClientAndDocumentInformation = (document: IDocumentCreatePDF): {
       legalForm: document.clientLegalForm,
       name: document.clientName,
       address: document.clientAddress,
-      addressComp: document.clientAddressComp,
+      addressComplement: document.clientAddressComplement,
       zipCode: document.clientZipCode,
       city: document.clientCity,
     },
     document: {
-      type: document.type,
+      type: translateType(document.type),
       number: document.number,
       date: typeof document.date !== "string" ? convertISO8601ToSlashDate(document.date.toISOString()) : convertISO8601ToSlashDate(document.date),
-      dueDate: typeof document.dueDate !== "string" ? convertISO8601ToSlashDate(document.dueDate.toISOString()) : convertISO8601ToSlashDate(document.dueDate),
+      dueDate: typeof document.dueDate !== "string" ? convertISO8601ToSlashDate(document.dueDate?.toISOString()) : convertISO8601ToSlashDate(document.dueDate),
       specialMention: document.specialMention,
     }
   }
 }
 
-const formatAllDocumentInformation = (document: IDocumentCreatePDF, products: IProductDocumentCreation): IDocumentPDFCreation => {
+const formatAllDocumentInformation = (document: IDocumentCreatePDF, products: IProductDocumentCreation[]): IDocumentPDFCreation => {
   const {my, client, document: documentInformation} = formatMyClientAndDocumentInformation(document);
 
-  const productsDocument: TProductDocument[] = formatProductsDocument([products]);
+  const productsDocument: TProductDocument[] = formatProductsDocument(products);
 
   const tvaInformation: TTvaInformation[] = formatTvaInformation(productsDocument, document.generalDiscountRate);
 
@@ -142,8 +156,12 @@ const formatAllDocumentInformation = (document: IDocumentCreatePDF, products: IP
   }
 }
 
-export const documentPDFCreation = (document: IDocumentCreatePDF, products: IProductDocumentCreation) => {
+export const documentPDFCreation = (document: IDocumentCreatePDF, products: IProductDocumentCreation[]) => {
   const templateLink = fs.readFileSync(path.resolve(__dirname, '../template/document.template.html'), 'utf8');
+
+  handlebars.registerHelper('neq', function(arg1, arg2, options) {
+    return (arg1 === arg2) ? options.fn(this) : options.inverse(this);
+  });
 
   const compiledTemplate = handlebars.compile(templateLink);
 
