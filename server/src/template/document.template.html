@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #000;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+
+    .a4 {
+      width: 210mm;
+      height: 297mm;
+      max-width: 210mm;
+      max-height: 297mm;
+      position: relative;
+      margin: 0 auto;
+      background-color: #fff;
+    }
+
+    .postal-information {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .my-name, .client-name {
+      font-size: x-large;
+      font-weight: bold;
+      margin-bottom: 1px;
+    }
+
+    .my-address, .my-address-comp, .my-city, .my-siren, .my-tva, .client-address, .client-address-comp, .client-city {
+      font-size: large;
+      margin-bottom: 2px;
+    }
+
+    .client-information {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+    }
+
+    .client-information .right {
+      max-width: 50%;
+    }
+
+    .document-information {
+      margin-top: 20px;
+    }
+
+    .document-type-number {
+      font-size: x-large;
+      font-weight: bold;
+      margin-bottom: 1px;
+      padding-left: 2mm;
+      color: #525252;
+    }
+
+    .document-information-content {
+      margin: 8px 0;
+      padding: 8px 0 8px 2mm;
+      font-size: large;
+      border-top: 1px solid #525252;
+      border-bottom: 1px solid #525252;
+    }
+
+    .document-product {
+      border: #444444 1px solid;
+      margin-top: 20px;
+      margin-right: 1px;
+    }
+
+    .document-product table {
+      border-collapse: collapse;
+      width: 100%;
+      max-width: 210mm;
+      height: 125mm;
+      max-height: 125mm;
+    }
+
+    .document-product table th, .document-product table td {
+      border-right: 1px solid black;
+      padding: 5px;
+      font-size: small;
+    }
+
+    .document-product table th:last-child, .document-product table td:last-child {
+      border-right: none;
+    }
+
+    .document-product table tr th {
+      border-bottom: 1px solid black;
+      width: 10mm;
+      max-width: 10mm;
+      height: 6mm;
+      max-height: 6mm;
+    }
+
+    .document-product table tr td.column {
+      text-align: right;
+      overflow-x: clip;
+      width: 10mm;
+      max-width: 10mm;
+    }
+
+    .document-product table tr th:first-child {
+      width: 45%;
+      max-width: 94mm;
+    }
+
+    .document-product table tr td:first-child {
+      width: 45%;
+      max-width: 94mm;
+      text-align: left;
+    }
+
+    .document-product table tbody tr td {
+      height: 6mm;
+      vertical-align: center;
+    }
+
+    span.product-name {
+      font-weight: bold;
+      font-size: small;
+    }
+
+    span.product-desc {
+      padding-left: 2mm
+    }
+
+    .document-product table tfoot {
+      height: 100%;
+    }
+
+    .footer {
+      margin-top: 25px;
+      display: inline-block;
+      width: 100%;
+    }
+
+    .footer-left {
+      width: 50%;
+      float: left;
+    }
+
+    .tva-part table {
+      width: 75%;
+      border: 1px solid black;
+      text-align: center;
+      border-collapse: collapse;
+    }
+
+    .tva-part table th:last-child, .tva-part table td:last-child {
+      border-right: none;
+    }
+
+    .tva-part table th, .tva-part table td {
+      border: 1px solid black;
+      padding: 1px 5px;
+      font-size: small;
+    }
+
+    .tva-part table th tr {
+      border-bottom: 1px solid black;
+      text-align: center;
+      height: 6mm;
+      max-height: 6mm;
+    }
+
+    .tva-part table tbody tr td.column {
+      text-align: right;
+      overflow-x: clip;
+    }
+
+    .tva-part table tbody tr td {
+      height: 6mm;
+      vertical-align: center;
+    }
+
+    .special-part {
+      margin-top: 10px;
+      width: 100%;
+      max-width: 105mm;
+      font-size: small;
+    }
+
+    .footer-right {
+      width: 50%;
+      float: right;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+    }
+
+    .total-part table {
+      width: 75%;
+      max-width: 105mm;
+      border-collapse: collapse;
+      position: absolute;
+      right: 1px;
+      border: 1px solid black;
+    }
+
+    .total-part table th:last-child, .total-part table td:last-child {
+      border-right: none;
+    }
+
+    .total-part table td {
+      padding: 1px 5px;
+      font-size: small;
+      border: 1px solid black;
+    }
+
+    .total-part table tr td.column {
+      overflow-x: clip;
+      text-align: right;
+    }
+
+    .total-part table tr td:first-child {
+      text-align: left;
+      font-weight: bold;
+    }
+
+    .total-part table tbody tr td {
+      height: 6mm;
+      vertical-align: center;
+    }
+  </style>
+</head>
+<body>
+<div class="a4">
+  <header class="postal-information">
+    <section class="my-information">
+      <h1 class="my-name">{{my.legalForm}} {{my.name}}</h1>
+      <p class="my-address">{{my.address}}</p>
+      {{#if my.addressComplement}}
+      <p class="my-address-comp">{{my.addressComplement}}</p>
+      {{/if}}
+      <p class="my-city">{{my.zipCode}}, {{my.city}}</p>
+      <p class="my-siren">SIREN : {{my.siren}}</p>
+      <p class="my-tva">Numéro de TVA intracommunautaire :<br/>{{my.tva}}</p>
+    </section>
+    <section class="client-information">
+      <div class="right">
+        <h1 class="client-name">{{#if client.legalForm}}<span>{{client.legalForm}} </span>{{/if}}{{client.name}}</h1>
+        <p class="client-address">{{client.address}}</p>
+        {{#if client.addressComplement}}
+        <p class="client-address-comp">{{client.addressComplement}}</p>
+        {{/if}}
+        <p class="client-city">{{client.zipCode}}, {{client.city}}</p>
+      </div>
+    </section>
+  </header>
+  <section class="document-information">
+    <h1 class="document-type-number">{{document.type}} N° {{document.number}}</h1>
+    <div class="document-information-content">
+      <p class="date">Date d'émission : {{document.date}}</p>
+      {{#neq document.type 'Devis'}}
+      <p class="dueDate">Date d'échéance : {{document.dueDate}}</p>
+      {{/neq}}
+    </div>
+  </section>
+  <section class="document-product">
+    <table>
+      <thead>
+      <tr>
+        <th class="column name-desc-h" scope="col">Nom et Description</th>
+        <th class="column quantity-h" scope="col">Qté</th>
+        <th class="column unitary-price-HT-h" scope="col">Prix unitaire HT</th>
+        <th class="column discount-rate" scope="col">Tx. Remise</th>
+        <th class="column total-price-HT-h" scope="col">Total HT</th>
+        <th class="column tva-h" scope="col">Tx. TVA</th>
+        <th class="column total-price-TTC-h" scope="col">Total TTC</th>
+      </tr>
+      </thead>
+      <tbody>
+      {{#each products}}
+      <tr>
+        <td class="column name-desc"><span
+          class="product-name">{{name}}</span><br/>
+          <span class="product-desc">{{description}}</span>
+        </td>
+        <td class="column quantity">{{quantity}} {{unit}}</td>
+        <td class="column unitary-price-HT">{{unitaryExclTvaPrice}}</td>
+        <td class="column discount-rate">{{discountRate}} %</td>
+        <td class="column total-price-HT">{{totalExclTvaPrice}}</td>
+        <td class="column tva">{{tvaRate}} %</td>
+        <td class="column total-price-TTC">{{totalInclTvaPrice}}</td>
+      </tr>
+      {{/each}}
+      </tbody>
+      <tfoot>
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      </tfoot>
+    </table>
+  </section>
+  <div class="footer">
+    <section class="footer-left">
+      <div class="tva-part">
+        <table>
+          <thead>
+          <tr>
+            <th class="column">% TVA</th>
+            <th class="column">Base de calcul</th>
+            <th class="column">Total</th>
+          </tr>
+          </thead>
+          <tbody>
+          {{#each tva}}
+          <tr>
+            <td class="first-column">{{tvaRate}} %</td>
+            <td class="column">{{totalExclTvaPrice}}</td>
+            <td class="column">{{totalTva}}</td>
+          </tr>
+          {{/each}}
+          </tbody>
+        </table>
+      </div>
+      {{#if document.specialMention}}
+      <div class="special-part">
+        <p>{{document.specialMention}}</p>
+      </div>
+      {{/if}}
+    </section>
+    <section class="footer-right">
+      <div class="total-part">
+        <table>
+          <tbody>
+          {{#if total.generalDiscountRate}}
+          <tr>
+            <td class="column">Montant HT av. remise</td>
+            <td class="column">{{total.totalExclTvaPricePreDiscount}} €</td>
+          </tr>
+          <tr>
+            <td class="column">Remise {{total.generalDiscountRate}} %</td>
+            <td class="column">{{total.generalDiscountAmount}} €</td>
+          </tr>
+          {{/if}}
+          {{#if total.additionalCostName}}
+          <tr>
+            <td class="column">{{total.additionalCostName}}</td>
+            <td class="column">{{total.additionalCostAmount}} €</td>
+          </tr>
+          {{/if}}
+          <tr>
+            <td class="column">Montant HT</td>
+            <td class="column">{{total.totalExclTvaPrice}} €</td>
+          </tr>
+          <tr>
+            <td class="column">Montant TVA</td>
+            <td class="column">{{total.totalTva}} €</td>
+          </tr>
+          <tr>
+            <td class="column">Montant TTC</td>
+            <td class="column">{{total.totalInclTvaPrice}} €</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+</div>
+</body>
+</html>

@@ -1,9 +1,9 @@
 import { NextFunction, Response } from 'express';
 import * as token from '../utils/tokens.util';
-import * as loginService from '../services/login.service';
 import { ISODateToTimestampWithoutMili } from "../utils/dateFormat.util";
 import { IRequestUser } from "../models/user.model";
 import { JwtPayload } from "jsonwebtoken";
+import { getLastLogout } from "../services/user.service";
 
 export const checkAccessToken = async (req: IRequestUser, res: Response, next: NextFunction) => {
   const accessToken = req.cookies.accessToken;
@@ -68,7 +68,7 @@ export const checkRefreshToken = async (req: IRequestUser, res: Response, next: 
       });
     }
 
-    const lastLogout = await loginService.getLastLogout(rawUser.userId);
+    const lastLogout = await getLastLogout(rawUser.userId);
 
     if (ISODateToTimestampWithoutMili(lastLogout.lastLogout) > rawUser.iat) {
       return res.status(403).json({
