@@ -6,11 +6,15 @@
 import * as http from "http";
 import * as app from "./app";
 import * as dotenv from "dotenv";
+import { initializeSocketIo } from "./utils/socketIo.util";
 
 dotenv.config();
 
 /* Creating the server */
 const server : http.Server = http.createServer(app.default);
+
+/* Setting up socket.io */
+initializeSocketIo(server)
 
 /* Setting up the server */
 const port : number = Number(process.env.PORT) || 8000;
