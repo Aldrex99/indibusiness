@@ -28,6 +28,7 @@ const connectUser = async (email: string, password: string) => {
     phone: rawUser.phone,
     role: rawUser.role,
     emailVerified: rawUser.emailVerified,
+    messageId: rawUser.messageId,
     createdAt: rawUser.createdAt,
     updatedAt: rawUser.updatedAt,
   };

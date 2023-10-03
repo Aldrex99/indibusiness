@@ -6,6 +6,7 @@ export interface IUser {
   phone?: string;
   role: string;
   emailVerified: boolean;
+  messageId?: string;
   createdAt: Date;
   updatedAt: Date;
 }

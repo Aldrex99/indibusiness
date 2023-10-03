@@ -133,6 +133,7 @@ model user {
   role                 String                 @default("individual")
   emailVerified        Boolean                @default(false)
   lastLogout           DateTime               @default(now()) @db.Timestamp(0)
+  messageId            String                 @unique @default(uuid())
   createdAt            DateTime               @default(now()) @db.Timestamp(0)
   updatedAt            DateTime               @updatedAt @db.Timestamp(0)
   client               client[]
