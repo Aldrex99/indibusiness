@@ -133,7 +133,7 @@ model user {
   role                 String                 @default("individual")
   emailVerified        Boolean                @default(false)
   lastLogout           DateTime               @default(now()) @db.Timestamp(0)
-  messageId            String                 @default(uuid())
+  messageId            String                 @unique @default(uuid())
   createdAt            DateTime               @default(now()) @db.Timestamp(0)
   updatedAt            DateTime               @updatedAt @db.Timestamp(0)
   client               client[]
@@ -235,15 +235,4 @@ model supplier {
   createdAt         DateTime @default(now()) @db.Timestamp(0)
   updatedAt         DateTime @updatedAt @db.Timestamp(0)
   debt              debt[]
-}
-
-model message {
-  id         Int       @id @default(autoincrement())
-  senderId   String    @db.VarChar(100)
-  receiverId String    @db.VarChar(100)
-  content    String    @db.VarChar()
-  read       Boolean   @default(false)
-  readAt     DateTime? @db.Timestamp(0)
-  createdAt  DateTime  @default(now()) @db.Timestamp(0)
-  updatedAt  DateTime  @updatedAt @db.Timestamp(0)
 }
