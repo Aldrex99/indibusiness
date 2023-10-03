@@ -1,0 +1,26 @@
+openapi: 3.0.0
+info:
+  description: "Api documentation for indibusiness project"
+  version: 1.0.2
+  title: Indibusiness
+  termsOfService: https://
+  contact:
+    email: a.casu99@gmail.com
+tags:
+  - name: user
+    description: Everything about user
+  - name: client
+    description: Everything about client
+  - name: supplier
+    description: Everything about supplier
+  - name: receivable
+    description: Everything about receivable
+  - name: debt
+    description: Everything about debt
+  - name: document
+    description: Everything about document
+  - name: product
+    description: Everything about product
+paths:
+
+

@@ -7,7 +7,7 @@
     "npm": "8"
   },
   "scripts": {
-    "setup": "npm install --prefix ./client && npm install --prefix ./server",
+    "setup": "npm install && npm install --prefix ./client && npm install --prefix ./server && cd ./server && npx prisma generate && cd ..",
     "dev:client": "cd client && npm run dev",
     "dev:server": "cd server && npm run dev",
     "dev": "concurrently \"npm run dev:client\" \"npm run dev:server\"",
