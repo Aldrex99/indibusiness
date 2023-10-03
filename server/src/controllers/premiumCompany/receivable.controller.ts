@@ -5,6 +5,7 @@ import * as receivableService from "../../services/receivable.service";
 import { addAtTotalReceivable, removeAtTotalReceivable } from "../../services/client.service";
 import { convertDateToISO8601 } from "../../utils/dateFormat.util";
 import { IReceivable, IGetFilteredReceivables } from "../../models/receivable.model";
+import { updateStatusDocument } from "../../services/document.service";
 
 export const createReceivable = async (req: IRequestUser, res: Response, next: NextFunction) => {
   const errors = validationResult(req);
@@ -159,6 +160,10 @@ export const updateReceivable = async (req: IRequestUser, res: Response, next: N
           await addAtTotalReceivable(user_id, oldReceivable[0].client_id, oldReceivable[0].amount);
         }
       }
+    }
+
+    if (oldReceivable[0].status !== status && oldReceivable[0].document_id !== null) {
+      await updateStatusDocument(user_id, oldReceivable[0].document_id, status)
     }
 
     const receivable = await receivableService.updateReceivable(user_id, receivable_id, {

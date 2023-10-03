@@ -14,8 +14,6 @@ export const createReceivable = async (data: IReceivableCreation) => {
 export const getFilteredReceivables = async (data: IGetFilteredReceivables) => {
   const whereClause = {}
 
-  console.log(data)
-
   if (data.search) {
     whereClause["OR"] = [
       {name: {contains: data.search, mode: "insensitive"}},

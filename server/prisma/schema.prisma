@@ -60,7 +60,7 @@ model document {
   type                    String            @db.VarChar(20)
   number                  String            @db.VarChar(20)
   date                    DateTime          @db.Timestamp(0)
-  dueDate                 DateTime          @db.Timestamp(0)
+  dueDate                 DateTime?         @db.Timestamp(0)
   legalForm               String            @db.VarChar(10)
   name                    String            @db.VarChar(100)
   address                 String            @db.VarChar(100)
@@ -76,8 +76,8 @@ model document {
   totalHT                 Float
   totalTTC                Float
   totalTVA                Float
-  additionnalCostName     String?           @db.VarChar(100)
-  additionnalCostAmount   Float?
+  additionalCostName      String?           @db.VarChar(100)
+  additionalCostAmount    Float?
   generalDiscountRate     Float?
   generalDiscountAmount   Float?
   specialMention          String?           @db.VarChar(1000)

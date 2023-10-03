@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <link href="./document.style.css" rel="stylesheet">
+</head>
+<body>
+<div class="a4">
+  <header class="postal-information">
+    <section class="my-information">
+      <h1 class="my-name"><span>SARL </span>BCL</h1>
+      <p class="my-address">26 Boulevard Carabacel</p>
+      <p class="my-address-comp">Chez le bocal</p>
+      <p class="my-city">06000, Nice</p>
+      <p class="my-siren">SIREN : 815678901</p>
+      <p class="my-tva">Numéro de TVA intracommunautaire :<br/>FR76815678901</p>
+    </section>
+    <section class="client-information">
+      <div class="right">
+        <h1 class="client-name"><span>SAS </span>Qiti</h1>
+        <p class="client-address">4 Avenue Jean-Médecin</p>
+        <p class="client-city">06000, Nice</p>
+      </div>
+    </section>
+  </header>
+  <section class="document-information">
+    <h1 class="document-type-number">Facture N° INV-2023-001</h1>
+    <div class="document-information-content">
+      <p class="date">Date d'émission : 08/08/2023</p>
+      <p class="dueDate">Date d'échéance : 08/09/2023</p>
+    </div>
+  </section>
+  <section class="document-product">
+    <table>
+      <thead>
+      <tr>
+        <th class="column name-desc-h" scope="col">Nom et Description</th>
+        <th class="column quantity-h" scope="col">Qté</th>
+        <th class="column unitary-price-HT-h" scope="col">Prix unitaire HT</th>
+        <th class="column discount-rate" scope="col">Tx. Remise</th>
+        <th class="column total-price-HT-h" scope="col">Total HT</th>
+        <th class="column tva-h" scope="col">Tx. TVA</th>
+        <th class="column total-price-TTC-h" scope="col">Total TTC</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td class="column name-desc"><span
+          class="product-name">Test</span><br/>
+          <span class="product-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam tempor tempor semper. Nam in egestas est. Cras cursus dictum turpis nec fringilla. In in urna quis tortor volutpat accumsan. Etiam euismod eu ipsum nec finibus. Maecenas at cursus purus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; </span>
+        </td>
+        <td class="column quantity">2 heures</td>
+        <td class="column unitary-price-HT">10000</td>
+        <td class="column discount-rate">10 %</td>
+        <td class="column total-price-HT">18000</td>
+        <td class="column tva">20 %</td>
+        <td class="column total-price-TTC">21600</td>
+      </tr>
+      <tr>
+        <td class="column name-desc"><span
+          class="product-name">Test</span><br/>
+          <span class="product-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam tempor tempor semper. Nam in egestas est. Cras cursus dictum turpis nec fringilla. In in urna quis tortor volutpat accumsan. Etiam euismod eu ipsum nec finibus. Maecenas at cursus purus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; </span>
+        </td>
+        <td class="column quantity">2 heures</td>
+        <td class="column unitary-price-HT">10000</td>
+        <td class="column discount-rate">10 %</td>
+        <td class="column total-price-HT">18000</td>
+        <td class="column tva">20 %</td>
+        <td class="column total-price-TTC">21600</td>
+      </tr>
+      </tbody>
+      <tfoot>
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      </tfoot>
+    </table>
+  </section>
+  <div class="footer">
+    <section class="footer-left">
+      <div class="tva-part">
+        <table>
+          <thead>
+          <tr>
+            <th class="column">% TVA</th>
+            <th class="column">Base de calcul</th>
+            <th class="column">Total</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td class="first-column">20 %</td>
+            <td class="column">36000</td>
+            <td class="column">7200</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="special-part">
+        <p>Nos factures sont libellées en Euros. Aucun escompte pour paiement anticipé ne sera accordé</p>
+      </div>
+    </section>
+    <section class="footer-right">
+      <div class="total-part">
+        <table>
+          <tbody>
+          <tr>
+            <td class="column">Montant HT av. remise</td>
+            <td class="column">36000 €</td>
+          </tr>
+          <tr>
+            <td class="column">Remise 10%</td>
+            <td class="column">3600 €</td>
+          </tr>
+          <tr>
+            <td class="column">Transport</td>
+            <td class="column">3600 €</td>
+          </tr>
+          <tr>
+            <td class="column">Montant HT</td>
+            <td class="column">36000 €</td>
+          </tr>
+          <tr>
+            <td class="column">Montant TVA</td>
+            <td class="column">7200 €</td>
+          </tr>
+          <tr>
+            <td class="column">Montant TTC</td>
+            <td class="column">43200 €</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+</div>
+</body>
+</html>
