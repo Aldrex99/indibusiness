@@ -6,5 +6,5 @@
 /server/.idea/
 /server/.env
 /server/build/
-/server/prisma/
-/server/src/documents/
+/server/prisma/migrations/
+/server/prisma/old-migrations/
