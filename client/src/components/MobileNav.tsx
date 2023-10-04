@@ -1,6 +1,6 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment } from "react";
-import { XMarkIcon } from "@heroicons/react/24/outline";
+import { Cog6ToothIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import LogoText from "../assets/LogoText.tsx";
 import NavDropdown from "./NavDropdown.tsx";
 import { IMobileNavProps } from "../types/Layout.type.ts";
@@ -64,6 +64,15 @@ export default function MobileNav({sidebarOpen, setSidebarOpen, navigation, them
                       <NavLink key={navigationItem.item?.name} item={navigationItem.item!}/>
                     )
                   ))}
+                  <div className="flex flex-1"/>
+                  <div className="flex flex-col pb-1 items-center justify-center">
+                    <NavLink item={{
+                      name: "Paramètres",
+                      to: "/settings",
+                      icon: Cog6ToothIcon,
+                      current: (window.location.pathname === "/settings")
+                    }}/>
+                  </div>
                 </nav>
               </div>
             </Dialog.Panel>

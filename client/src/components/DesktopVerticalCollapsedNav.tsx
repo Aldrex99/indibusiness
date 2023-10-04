@@ -2,6 +2,7 @@ import { IDesktopVerticalNavProps } from "../types/Layout.type.ts";
 import Logo from "../assets/Logo.tsx";
 import NavDropdownCollapsed from "./NavDropdownCollapsed.tsx";
 import NavLinkCollapsed from "./NavLinkCollapsed.tsx";
+import { Cog6ToothIcon } from "@heroicons/react/24/outline";
 
 export default function DesktopVerticalCollapsedNav({
                                                       navigation,
@@ -21,7 +22,7 @@ export default function DesktopVerticalCollapsedNav({
             className="flex h-16 shrink-0 mx-2 items-center text-primary">
             <Logo/>
           </div>
-          <nav className="flex flex-1 flex-col pr-2">
+          <nav className="flex flex-col pr-2">
             {navigation.map((navigationItem) => (
               navigationItem.category && navigationItem.items ? (
                 <NavDropdownCollapsed key={navigationItem.category.name} category={navigationItem.category}
@@ -31,6 +32,15 @@ export default function DesktopVerticalCollapsedNav({
               )
             ))}
           </nav>
+          <div className="flex flex-1"/>
+          <div className="flex flex-col pr-2 pb-1 items-center justify-center">
+            <NavLinkCollapsed item={{
+              name: "Paramètres",
+              to: "/settings",
+              icon: Cog6ToothIcon,
+              current: (window.location.pathname === "/settings")
+            }}/>
+          </div>
         </div>
       </div>
     </>

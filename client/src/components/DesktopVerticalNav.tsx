@@ -2,6 +2,8 @@ import LogoText from "../assets/LogoText.tsx";
 import NavDropdown from "./NavDropdown.tsx";
 import NavLink from "./NavLink.tsx";
 import { IDesktopVerticalNavProps } from "../types/Layout.type.ts";
+import { Cog6ToothIcon } from "@heroicons/react/24/outline";
+import { useLocation } from "react-router-dom";
 
 export default function DesktopVerticalNav({
                                              navigation,
@@ -35,7 +37,7 @@ export default function DesktopVerticalNav({
               </div>
             </div>
           </div>
-          <nav className="flex flex-1 flex-col pr-2">
+          <nav className="flex flex-col pr-2">
             {navigation.map((navigationItem) => (
               navigationItem.category && navigationItem.items ? (
                 <NavDropdown key={navigationItem.category.name} category={navigationItem.category}
@@ -45,6 +47,15 @@ export default function DesktopVerticalNav({
               )
             ))}
           </nav>
+          <div className="flex flex-1"/>
+          <div className="flex flex-col pb-1 items-center justify-center">
+            <NavLink item={{
+              name: "Paramètres",
+              to: "/settings",
+              icon: Cog6ToothIcon,
+              current: (useLocation().pathname === "/settings")
+            }}/>
+          </div>
         </div>
       </div>
     </>
