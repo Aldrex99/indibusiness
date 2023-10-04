@@ -32,7 +32,7 @@ export default function NavDropdownCollapsed({category, items}: INavigation) {
                 <category.icon className="w-6 h-6 mr-2"/>
                 </span>
                 </div>
-                {open || oneOfItemsIsCurrent ? (
+                {open ? (
                   <ChevronDownIcon
                     className="w-6 h-6"
                     aria-hidden="true"/>
@@ -44,7 +44,7 @@ export default function NavDropdownCollapsed({category, items}: INavigation) {
               </Menu.Button>
             </div>
             <Transition
-              show={open || oneOfItemsIsCurrent}
+              show={open}
               enter="transition ease-out duration-100"
               enterFrom="transform opacity-0 scale-95"
               enterTo="transform opacity-100 scale-100"
@@ -52,7 +52,7 @@ export default function NavDropdownCollapsed({category, items}: INavigation) {
               leaveFrom="transform opacity-100 scale-100"
               leaveTo="transform opacity-0 scale-95"
             >
-              {open || oneOfItemsIsCurrent && (
+              {open && (
                 <Menu.Items static
                             className="w-full rounded-r-full focus:outline-none">
                   {items.map((item) => (

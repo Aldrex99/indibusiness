@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from 'react'
+import { Fragment, useState } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 import {
   Bars3Icon,
@@ -6,7 +6,6 @@ import {
   HomeIcon,
   ChevronDownIcon,
   DocumentIcon,
-  MagnifyingGlassIcon,
   UserCircleIcon,
 } from '@heroicons/react/24/outline'
 import { useLocation } from "react-router-dom";
@@ -119,9 +118,9 @@ export default function Layout() {
         )}
 
         <div className={classNames(!collapsed || collapsedHover ? "lg:pl-72" : "lg:pl-20")}>
-          <div className="p-1">
+          <div className="px-1">
             <div
-              className="sticky top-1 rounded z-40 flex h-12 shrink-0 items-center gap-x-4 bg-themed-insert px-4 sm:gap-x-6 sm:px-6 lg:px-8">
+              className="sticky top-1 rounded-b z-40 flex h-12 shrink-0 items-center gap-x-4 bg-themed-insert px-4 sm:gap-x-6 sm:px-6 lg:px-8">
               <button type="button" className="-m-2.5 p-2.5 text-themed-text lg:hidden"
                       onClick={() => setSidebarOpen(true)}>
                 <span className="sr-only">Open sidebar</span>
@@ -132,22 +131,6 @@ export default function Layout() {
               <div className="h-6 w-px bg-themed-text lg:hidden" aria-hidden="true"/>
 
               <div className="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
-                <form className="relative flex flex-1" action="#" method="GET">
-                  <label htmlFor="search-field" className="sr-only">
-                    Search
-                  </label>
-                  <MagnifyingGlassIcon
-                    className="pointer-events-none absolute inset-y-0 left-0 h-full w-5 text-themed-text"
-                    aria-hidden="true"
-                  />
-                  <input
-                    id="search-field"
-                    className="bg-transparent block h-full w-full border-0 py-0 pl-8 pr-0 text-themed-text placeholder:text-themed-text/50 focus:ring-0 sm:text-sm"
-                    placeholder="Search..."
-                    type="search"
-                    name="search"
-                  />
-                </form>
                 <div className="flex items-center gap-x-4 lg:gap-x-6">
                   <button type="button"
                           className="-m-2.5 p-2 text-themed-text rounded-full hover:bg-nav-element-hover">
