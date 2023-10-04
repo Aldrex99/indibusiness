@@ -1,13 +1,14 @@
 import Layout from './components/Layout'
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
 
   return (
-    <>
-      <div className="dark bg-themed-bg text-themed-text">
-        <Layout/>
-      </div>
-    </>
+    <Router>
+      <Routes>
+        <Route path="*" element={<Layout/>}/>
+      </Routes>
+    </Router>
   )
 }
 
