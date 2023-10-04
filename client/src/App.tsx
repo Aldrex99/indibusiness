@@ -1,10 +1,12 @@
+import Layout from './components/Layout'
+
 function App() {
 
   return (
     <>
-      <p className="text-3xl text-sky-500 text-center">
-        Indibusiness
-      </p>
+      <div className="dark bg-themed-bg text-themed-text">
+        <Layout/>
+      </div>
     </>
   )
 }
