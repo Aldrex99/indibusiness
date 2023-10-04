@@ -29,3 +29,13 @@ export interface IMobileNavProps {
   theme: string;
   color: string;
 }
+
+export interface IDesktopVerticalNavProps {
+  navigation: INavigation[];
+  theme: string;
+  color: string;
+  collapsed: boolean;
+  setCollapsed: (value: boolean) => void;
+  collapsedHover?: boolean;
+  setCollapsedHover?: (value: boolean) => void;
+}

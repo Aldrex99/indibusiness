@@ -52,18 +52,16 @@ export default function MobileNav({sidebarOpen, setSidebarOpen, navigation, them
                 </div>
               </Transition.Child>
               <div className={`${theme + " " + color} flex grow flex-col gap-y-5 overflow-y-auto bg-themed-insert`}>
-                <div className="flex h-14 shrink-0 mr-16 ml-2 items-center text-primary">
+                <div className="flex h-16 shrink-0 mr-16 ml-2 items-center text-primary">
                   <LogoText/>
                 </div>
-                <nav className="flex flex-1 flex-col">
+                <nav className="flex flex-1 flex-col pr-2">
                   {navigation.map((navigationItem) => (
                     navigationItem.category && navigationItem.items ? (
                       <NavDropdown key={navigationItem.category.name} category={navigationItem.category}
                                    items={navigationItem.items}/>
                     ) : (
-                      <div className="w-10/12">
-                        <NavLink key={navigationItem.item?.name} item={navigationItem.item!}/>
-                      </div>
+                      <NavLink key={navigationItem.item?.name} item={navigationItem.item!}/>
                     )
                   ))}
                 </nav>

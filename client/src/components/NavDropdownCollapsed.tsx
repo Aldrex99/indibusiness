@@ -2,16 +2,22 @@ import { Menu, Transition } from '@headlessui/react';
 import { ChevronDownIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import { INavigation } from "../types/Layout.type.ts";
 import { classNames } from "../utils/classeNames.ts";
-import NavLink from "./NavLink.tsx";
+import NavLinkCollapsed from "./NavLinkCollapsed.tsx";
+import { useEffect, useState } from "react";
 
-export default function NavDropdown({category, items}: INavigation) {
-  const oneOfItemsIsCurrent = items?.some(item => item.current)
+export default function NavDropdownCollapsed({category, items}: INavigation) {
+  const [oneOfItemsIsCurrent, setOneOfItemsIsCurrent] = useState(false)
+
+  useEffect(() => {
+    const oneOfItemsIsCurrentTemp: boolean = items?.some(item => item.current) || false
+
+    setOneOfItemsIsCurrent(oneOfItemsIsCurrentTemp)
+  }, [items])
 
   return (
     category && items ? (
       <Menu as="ul" className="relative inline-block text-left">
         {({open}) => (
-          
           <>
             <div>
               <Menu.Button
@@ -24,10 +30,9 @@ export default function NavDropdown({category, items}: INavigation) {
                 <div>
                 <span className="flex items-center">
                 <category.icon className="w-6 h-6 mr-2"/>
-                  {category.name}
                 </span>
                 </div>
-                {open ? (
+                {open || oneOfItemsIsCurrent ? (
                   <ChevronDownIcon
                     className="w-6 h-6"
                     aria-hidden="true"/>
@@ -39,7 +44,7 @@ export default function NavDropdown({category, items}: INavigation) {
               </Menu.Button>
             </div>
             <Transition
-              show={open}
+              show={open || oneOfItemsIsCurrent}
               enter="transition ease-out duration-100"
               enterFrom="transform opacity-0 scale-95"
               enterTo="transform opacity-100 scale-100"
@@ -47,12 +52,12 @@ export default function NavDropdown({category, items}: INavigation) {
               leaveFrom="transform opacity-100 scale-100"
               leaveTo="transform opacity-0 scale-95"
             >
-              {open && (
+              {open || oneOfItemsIsCurrent && (
                 <Menu.Items static
                             className="w-full rounded-r-full focus:outline-none">
                   {items.map((item) => (
                     <Menu.Item key={item.name}>
-                      <NavLink
+                      <NavLinkCollapsed
                         item={item}
                         dropdown={true}
                       />
