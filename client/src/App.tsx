@@ -1,11 +1,14 @@
+import Layout from './components/Layout'
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
 function App() {
 
   return (
-    <>
-      <p className="text-3xl text-sky-500 text-center">
-        Indibusiness
-      </p>
-    </>
+    <Router>
+      <Routes>
+        <Route path="*" element={<Layout/>}/>
+      </Routes>
+    </Router>
   )
 }
 
