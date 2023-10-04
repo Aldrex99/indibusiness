@@ -4,14 +4,14 @@ import { INavigation } from "../types/Layout.type.ts";
 import { classNames } from "../utils/classeNames.ts";
 import NavLink from "./NavLink.tsx";
 
-export default function NavDropdown({category, items}: INavigation) {
+export default function NavDropdown({category, items, setSidebarOpen}: INavigation) {
   const oneOfItemsIsCurrent = items?.some(item => item.current)
 
   return (
     category && items ? (
       <Menu as="ul" className="relative inline-block text-left">
         {({open}) => (
-          
+
           <>
             <div>
               <Menu.Button
@@ -55,6 +55,7 @@ export default function NavDropdown({category, items}: INavigation) {
                       <NavLink
                         item={item}
                         dropdown={true}
+                        setSidebarOpen={setSidebarOpen}
                       />
                     </Menu.Item>
                   ))}

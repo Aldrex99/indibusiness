@@ -20,6 +20,7 @@ export interface INavigation {
   }
   items?: TItem[];
   item?: TItem;
+  setSidebarOpen?: (value: boolean) => void;
 }
 
 export interface IMobileNavProps {

@@ -3,14 +3,16 @@ import { HashtagIcon } from "@heroicons/react/24/outline";
 import { classNames } from "../utils/classeNames.ts";
 import { TItem } from "../types/Layout.type.ts";
 
-export default function NavLink({item, dropdown = false}: {
+export default function NavLink({item, setSidebarOpen, dropdown = false}: {
   item: TItem,
   dropdown?: boolean
+  setSidebarOpen?: (value: boolean) => void
 }) {
   return (
     item &&
     <Link
       to={item.to}
+      onClick={() => setSidebarOpen ? setSidebarOpen(false) : null}
       className={
         classNames(
           item.current ? 'bg-primary-gradient text-primary-text' : 'hover:bg-nav-element-hover',

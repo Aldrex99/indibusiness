@@ -59,19 +59,23 @@ export default function MobileNav({sidebarOpen, setSidebarOpen, navigation, them
                   {navigation.map((navigationItem) => (
                     navigationItem.category && navigationItem.items ? (
                       <NavDropdown key={navigationItem.category.name} category={navigationItem.category}
-                                   items={navigationItem.items}/>
+                                   items={navigationItem.items} setSidebarOpen={setSidebarOpen}/>
                     ) : (
-                      <NavLink key={navigationItem.item?.name} item={navigationItem.item!}/>
+                      <NavLink key={navigationItem.item?.name} item={navigationItem.item!}
+                               setSidebarOpen={setSidebarOpen}/>
                     )
                   ))}
                   <div className="flex flex-1"/>
                   <div className="flex flex-col pb-1 items-center justify-center">
-                    <NavLink item={{
-                      name: "Paramètres",
-                      to: "/settings",
-                      icon: Cog6ToothIcon,
-                      current: (window.location.pathname === "/settings")
-                    }}/>
+                    <NavLink
+                      item={{
+                        name: "Paramètres",
+                        to: "/settings",
+                        icon: Cog6ToothIcon,
+                        current: (window.location.pathname === "/settings")
+                      }}
+                      setSidebarOpen={setSidebarOpen}
+                    />
                   </div>
                 </nav>
               </div>
